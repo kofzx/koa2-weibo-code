@@ -46,9 +46,9 @@ async function getUserInfo(userName, password) {
  */
 async function createUser({ userName, password, gender = 3, nickName }) {
 	const result = await User.create({
-		userName,
+		username: userName,
 		password,
-		nickName: nickName ? nickName : userName,
+		nickname: nickName ? nickName : userName,
 		gender
 	});
 
