@@ -8,7 +8,7 @@ const { STRING, DECIMAL } = require('../types')
 
 // users
 const User = seq.define('user', {
-	username: {
+	userName: {
 		type: STRING,
 		allowNull: false,
 		unique: true,
@@ -19,7 +19,7 @@ const User = seq.define('user', {
 		allowNull: false,
 		comment: '密码'
 	},
-	nickname: {
+	nickName: {
 		type: STRING,
 		allowNull: true,
 		comment: '昵称'
@@ -27,6 +27,7 @@ const User = seq.define('user', {
 	gender: {
 		type: DECIMAL,
 		allowNull: false,
+		defaultValue: 3,
 		comment: '性别 (1 男 2 女 3 保密)'
 	},
 	picture: {

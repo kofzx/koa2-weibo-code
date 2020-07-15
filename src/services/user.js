@@ -22,7 +22,7 @@ async function getUserInfo(userName, password) {
 
 	// 查询
 	const result = await User.findOne({
-		attributes: ['id', 'username', 'nickname', 'picture', 'city'],
+		attributes: ['id', 'userName', 'nickName', 'picture', 'city'],
 		where: whereOpt
 	})
 
@@ -46,16 +46,31 @@ async function getUserInfo(userName, password) {
  */
 async function createUser({ userName, password, gender = 3, nickName }) {
 	const result = await User.create({
-		username: userName,
+		userName: userName,
 		password,
-		nickname: nickName ? nickName : userName,
+		nickName: nickName ? nickName : userName,
 		gender
 	});
 
 	return result.dataValues;
 }
 
+/**
+ * 删除用户
+ * @param  {string} userName 用户名
+ */
+async function deleteUser(userName) {
+	const result = await User.destroy({
+		where: {
+			userName
+		}
+	});
+	// result 删除的行数
+	return result > 0;
+}
+
 module.exports = {
 	getUserInfo,
-	createUser
+	createUser,
+	deleteUser
 }

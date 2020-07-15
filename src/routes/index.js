@@ -35,19 +35,19 @@ router.get('/json', loginCheck, async (ctx, next) => {
   }
 })
 
-router.get('/profile/:username', async (ctx, next) => {
-	const { username } = ctx.params;
+router.get('/profile/:userName', async (ctx, next) => {
+	const { userName } = ctx.params;
 	ctx.body = {
     	title: 'This is profile page',
-    	username
+    	userName
   	}
 })
 
-router.get('/loadMore/:username/:pageIndex', async (ctx, next) => {
-	const { username, pageIndex } = ctx.params;
+router.get('/loadMore/:userName/:pageIndex', async (ctx, next) => {
+	const { userName, pageIndex } = ctx.params;
 	ctx.body = {
     	title: 'This is loadMore api',
-    	username,
+    	userName,
     	pageIndex
   	}
 })
