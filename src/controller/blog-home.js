@@ -3,6 +3,7 @@
  * @author kofzx
  */
 
+const xss = require('xss')
 const { createBlog } = require('../services/blog')
 const { SuccessModel, ErrorModel } = require('../model/ResModel')
 const {
@@ -18,7 +19,7 @@ async function create({ userId, content, image }) {
 		// 创建微博
 		const blog = await createBlog({
 			userId,
-			content,
+			content: xss(content),
 			image
 		});
 
