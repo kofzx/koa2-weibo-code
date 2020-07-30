@@ -6,6 +6,7 @@
 const router = require('koa-router')()
 const { loginCheck, loginRedirect } = require('../../middlewares/loginChecks')
 const { getProfileBlogList } = require('../../controller/blog-profile')
+const { isExist } = require('../../controller/user')
 
 // 首页
 router.get('/', loginCheck, async (ctx, next) => {
@@ -18,8 +19,27 @@ router.get('/profile', loginRedirect, async (ctx, next) => {
 	ctx.redirect(`/profile/${userName}`);
 })
 router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
-	const { userName: curUserName } = ctx.params;
+	// 已登录用户的信息
+	const myUserInfo = ctx.session.userInfo;
+	const myUserName = myUserInfo.userName;
 
+	let curUserInfo;
+	const { userName: curUserName } = ctx.params;
+	const isMe = myUserName === curUserName;
+
+	if (isMe) {
+		// 是当前登录用户
+		curUserInfo = myUserInfo;
+	} else {
+		const existResult = await isExist(curUserName);
+		if (existResult.errno != 0) {
+			// 用户名不存在
+			return;
+		}
+		curUserInfo = existResult.data;
+	}
+
+	// 获取微博第一页数据
 	const result = await getProfileBlogList(curUserName, 0);
 	const { isEmpty, blogList, pageSize, pageIndex, count } = result.data;
 
@@ -30,6 +50,10 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
 			pageSize, 
 			pageIndex, 
 			count
+		},
+		userData: {
+			userInfo: curUserInfo,
+			isMe
 		}
 	})
 })
