@@ -15,7 +15,7 @@ const UserRelation = seq.define('userRelation', {
 	followerId: {
 		type: INTEGER,
 		allowNull: false,
-		comment: '跟随者 id'
+		comment: '被关注用户 id'
 	}
 })
 
