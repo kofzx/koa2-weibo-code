@@ -4,12 +4,12 @@
  */
 
 const server = require('../server')
-const { COOKIE, USER_NAME } = require('../testUserInfo')
+const { L_COOKIE } = require('../testUserInfo')
 
 test('广场页，加载第一页数据，应该成功', async () => {
 	const res = await server
 		.get(`/api/square/loadMore/0`)
-		.set('cookie', COOKIE)
+		.set('cookie', L_COOKIE)
 
 	expect(res.body.errno).toBe(0)
 
