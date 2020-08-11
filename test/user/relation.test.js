@@ -10,7 +10,8 @@ const {
 	L_USER_NAME,
 	L_COOKIE,
 	Z_ID,
-	Z_USER_NAME
+	Z_USER_NAME,
+	Z_COOKIE
 } = require('../testUserInfo')
 
 // 先让李四取消关注张三,（为了避免现在李四关注了张三）
@@ -34,7 +35,7 @@ test('李四关注张三，应该成功', async () => {
 })
 
 // 获取粉丝
-test('获取张三的粉丝，应该有张三', async () => {
+test('获取张三的粉丝，应该有李四', async () => {
 	const result = await getFans(Z_ID);
 	const { count, fansList } = result.data;
 	const hasUserName = fansList.some(fanInfo => {
@@ -46,7 +47,7 @@ test('获取张三的粉丝，应该有张三', async () => {
 })
 
 // 获取关注人
-test('获取张三的关注人，应该有李四', async () => {
+test('获取李四的关注人，应该有张三', async () => {
 	const result = await getFollowers(L_ID);
 	const { count, followersList } = result.data;
 	const hasUserName = followersList.some(followerInfo => {
@@ -55,6 +56,19 @@ test('获取张三的关注人，应该有李四', async () => {
 
 	expect(count > 0).toBe(true)
 	expect(hasUserName).toBe(true)
+})
+
+// 获取 at 列表
+test('获取李四的关注人，应该有张三', async () => {
+	const res = await server
+		.get('/api/user/getAtList')
+		.set('cookie', L_COOKIE)
+
+	const atList = res.body;
+	const hasUserName = atList.some(item => {
+		return item.indexOf(`- ${Z_USER_NAME}`) > 0
+	})	
+	expect(hasUserName).toBe(true);
 })
 
 // 取消关注

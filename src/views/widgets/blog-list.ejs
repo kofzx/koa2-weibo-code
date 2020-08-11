@@ -57,8 +57,9 @@ $(function () {
         var nickName = $target.attr('data-nickName')
 
         // 设置内容并获取焦点
-        $textContent.val(' // @' + nickName + ' - ' + userName + ' : ' + content)
-        setCursor($textContent[0], 0, 0)
+        $textContent.val('@' + nickName + ' - ' + userName + ' : ')
+        // setCursor($textContent[0], 0, 0)
+        $textContent[0].focus();
     })
 })
 </script>
