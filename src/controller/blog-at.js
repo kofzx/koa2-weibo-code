@@ -3,14 +3,17 @@
  * @author kofzx
  */
 
-const { getAtRelationCount, getAtUserBlogList } = require('../services/at-relation')
+const { 
+	getAtRelationCount, 
+	getAtUserBlogList,
+	updateAtRelation
+} = require('../services/at-relation')
 const { SuccessModel } = require('../model/ResModel')
 const { PAGE_SIZE } = require('../conf/constant')
 
 /**
  * 获取 @ 我的微博数量
- * @param  {[type]} userId [description]
- * @return {[type]}        [description]
+ * @param  {number} userId userId
  */
 async function getAtMeCount(userId) {
 	const count = await getAtRelationCount(userId);
@@ -23,7 +26,6 @@ async function getAtMeCount(userId) {
  * 获取 @ 用户的微博列表
  * @param  {number} userId    userId
  * @param  {Number} pageIndex pageIndex
- * @return {[type]}           [description]
  */
 async function getAtMeBlogList(userId, pageIndex = 0) {
 	const result = await getAtUserBlogList({
@@ -43,7 +45,25 @@ async function getAtMeBlogList(userId, pageIndex = 0) {
 	})
 }
 
+/**
+ * 标记为已读
+ * @param  {number} userId userId
+ */
+async function markAsRead(userId) {
+	try {
+		await updateAtRelation(
+			{ newIsRead: true },
+			{ userId, isRead: false }
+		)
+	} catch (ex) {
+		console.error(ex);
+	}
+
+	// 不需要返回 SuccessModel 或者 ErrorModel
+}
+
 module.exports = {
 	getAtMeCount,
-	getAtMeBlogList
+	getAtMeBlogList,
+	markAsRead
 }
